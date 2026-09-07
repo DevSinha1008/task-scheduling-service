@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: task-scheduler
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/scheduler}
+    username: ${DATABASE_USER:scheduler}
+    password: ${DATABASE_PASSWORD:scheduler}
+  jpa:
+    hibernate:
+      # update: Hibernate creates/alters tables from the entities at startup.
+      # Convenient for a project of this size. A production system would use
+      # a migration tool (Flyway/Liquibase) with reviewed, versioned SQL,
+      # because 'update' never drops or renames and cannot be rolled back.
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          # Batch inserts/updates into single round trips instead of one
+          # statement per entity. Matters when enqueuing thousands of jobs.
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
+    open-in-view: false   # do not hold a DB connection open for view rendering
+  threads:
+    virtual:
+      enabled: false
+
+server:
+  port: ${SERVER_PORT:8080}
+
+app:
+  jwt:
+    # Overridden by env var in any real deployment. Must be >= 256 bits for HS256.
+    secret: ${JWT_SECRET:dev-only-secret-change-me-in-production-1234567890}
+    expiry-seconds: ${JWT_EXPIRY_SECONDS:3600}
+  worker:
+    enabled: ${WORKER_ENABLED:true}
+    pool-size: ${WORKER_POOL_SIZE:8}
+    queue-capacity: ${WORKER_QUEUE_CAPACITY:200}
+    batch-size: ${WORKER_BATCH_SIZE:20}
+    poll-interval-ms: ${WORKER_POLL_INTERVAL_MS:500}
+    reaper-interval-ms: ${WORKER_REAPER_INTERVAL_MS:30000}
+    stale-timeout-seconds: ${WORKER_STALE_TIMEOUT_SECONDS:300}
+
+logging:
+  level:
+    com.scheduler: INFO

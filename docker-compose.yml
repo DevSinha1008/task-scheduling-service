@@ -1,0 +1,32 @@
+services:
+  api:
+    build: .
+    ports: ["8080:8080"]
+    environment:
+      DATABASE_URL: jdbc:postgresql://db:5432/scheduler
+      DATABASE_USER: scheduler
+      DATABASE_PASSWORD: scheduler
+      JWT_SECRET: compose-dev-secret-change-me-1234567890abcdef
+      WORKER_POOL_SIZE: 8
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: scheduler
+      POSTGRES_PASSWORD: scheduler
+      POSTGRES_DB: scheduler
+    ports: ["5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    healthcheck:
+      # The API fails to start if Postgres is not accepting connections yet;
+      # this gate makes `docker compose up` deterministic rather than racy.
+      test: ["CMD-SHELL", "pg_isready -U scheduler"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:

@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/scheduler_test
+    username: test
+    password: test
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+app:
+  jwt:
+    secret: test-secret-key-that-is-long-enough-for-hs256-algorithm
+    expiry-seconds: 3600
+  worker:
+    enabled: false
+    poll-interval-ms: 100
+logging:
+  level:
+    com.scheduler: WARN
