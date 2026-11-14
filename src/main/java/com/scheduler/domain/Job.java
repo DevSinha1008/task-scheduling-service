@@ -11,7 +11,7 @@ import java.util.UUID;
  *                              \-> FAILED (retries remain) -> PENDING
  *                              \-> DEAD    (retries exhausted)
  *
- * <p><b>Exactly-once execution.</b> Two mechanisms combine to give it:
+ * <p><b>Exactly-once claiming.</b> Two mechanisms combine to give it:
  *
  * <ol>
  *   <li><b>Claim-by-update.</b> A worker does not "read then run"; it
@@ -26,7 +26,7 @@ import java.util.UUID;
  *       rather than silently overwriting the other transaction's work.</li>
  * </ol>
  *
- * <p>The honest boundary: this is exactly-once <i>claiming</i>. If a worker
+ * <p>Limitation: this is exactly-once <i>claiming</i>, not execution. If a worker
  * crashes after the side effect but before committing SUCCEEDED, the job is
  * reaped back to PENDING and runs again — at-least-once in that window. True
  * end-to-end exactly-once would require the side effect and the state change

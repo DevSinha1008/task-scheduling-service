@@ -1,4 +1,4 @@
-"""Load test the scheduler to produce the throughput and latency figures.
+"""Load test the scheduler: enqueue throughput/latency and drain throughput.
 
     python scripts/loadtest.py http://localhost:8080 5000
 
