@@ -1,7 +1,6 @@
 // build.gradle.kts — Gradle build using the Kotlin DSL.
 //
-// Language split (deliberate, and the reason is structural rather than
-// preferential): the application itself is Java, and only the test source
+// Language split: the application itself is Java, and only the test source
 // set is Kotlin. Gradle supports this directly — the `kotlin` plugin adds a
 // Kotlin compilation step, and because Kotlin and Java both compile to JVM
 // bytecode, Kotlin tests can instantiate and call Java classes with no

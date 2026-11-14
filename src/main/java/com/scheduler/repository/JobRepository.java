@@ -28,7 +28,7 @@ public interface JobRepository extends JpaRepository<Job, UUID> {
     /**
      * Atomically claim up to {@code limit} runnable jobs for one worker.
      *
-     * <p>This is the heart of the exactly-once guarantee, and it is native
+     * <p>This is the core of exactly-once claiming, and it is native
      * SQL rather than JPQL because it relies on a PostgreSQL feature JPQL
      * cannot express: {@code FOR UPDATE SKIP LOCKED}.
      *

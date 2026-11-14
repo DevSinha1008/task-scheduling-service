@@ -68,7 +68,7 @@ class JobQueueIntegrationTest {
     }
 
     /**
-     * The exactly-once guarantee under real contention.
+     * Exactly-once claiming under real contention.
      *
      * Eight threads race to claim from a queue of 200. Every job must be
      * claimed by exactly one worker: no duplicates (which would mean work
